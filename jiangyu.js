@@ -7,6 +7,7 @@ writeStream.write(`roomName,add,floor,area,dire,price,traffic,teg,id \n`);
 let pageNumNode = 1;
 (async () => {
   const browser = await puppeteer.launch({
+    //ture for headless mode
     headless: false,
     args: ["--window-size=1920,1080"]
   });
@@ -25,7 +26,7 @@ let pageNumNode = 1;
       function getinnerText(dom, selector) {
         let innerText = [];
         Array.from(dom.querySelectorAll(selector)).forEach(i => {
-          i.innerText && innerText.push(i.innerText);
+          i.innerText && innerText.push(i.innerText.replace(/,/g, "|"));
         });
         return innerText.join("|");
       }
