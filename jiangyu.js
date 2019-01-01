@@ -3,7 +3,9 @@ const url = "http://www.jiangroom.com/queryRooms.html";
 const fs = require("fs");
 const writeStream = fs.createWriteStream("rooms.csv");
 
-writeStream.write(`roomName,add,floor,area,dire,price,traffic,teg,id \n`);
+writeStream.write(
+  `roomName,add,floor,area(m²),dire,price(元/月),traffic,teg,id \n`
+);
 let pageNumNode = 1;
 (async () => {
   const browser = await puppeteer.launch({
@@ -37,9 +39,9 @@ let pageNumNode = 1;
             roomName: getinnerText(room, "h5"),
             add: getinnerText(room, ".add"),
             floor: getinnerText(room, ".floor span"),
-            area: getinnerText(room, ".area span"),
+            area: parseInt(getinnerText(room, ".area span").replace("m²", "")),
             dire: getinnerText(room, ".dire span"),
-            price: getinnerText(room, ".price"),
+            price: parseInt(getinnerText(room, ".price").replace("元/月", "")),
             traffic: getinnerText(room, ".traffic span"),
             teg: getinnerText(room, ".tags.clearfix a"),
             //TODO: need improve by using Regex
